@@ -1,0 +1,127 @@
+@import "_normalize";
+@import "_colors";
+@import "_animations";
+
+:root {
+    --block-width: 30px;
+    --next-block-width: 20px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #1f2020;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+}
+
+#tetris {
+    display: flex;
+    justify-content: center;
+}
+
+.grid {
+    table {
+        margin: auto;
+        border: 2px solid $color-table-border;
+        border-collapse: collapse;
+        background-color: $color-dark;
+    }
+    tr {
+        &:nth-of-type(1),
+        &:nth-of-type(2) {
+            display: none;
+        }
+    }
+    td {
+        position: relative;
+        width: var(--block-width);
+        height: var(--block-width);
+        border: 1px solid $color-cell-border;
+        padding: 0;
+        text-align: center;
+    }
+}
+
+.infos {
+    text-align: center;
+    font-size: 2rem;
+}
+
+.next-block {
+    margin-bottom: 1rem;
+    padding-left: 1rem;
+
+    table {
+        margin: auto;
+        border-collapse: collapse;
+    }
+    td {
+        position: relative;
+        width: var(--next-block-width);
+        height: var(--next-block-width);
+        padding: 0;
+        text-align: center;
+        
+        .block {
+            width: var(--next-block-width);
+            height: var(--next-block-width);
+            border-width: 3px;
+            border-color: $color-grey;
+            background-color: $color-grey;
+        }
+    }
+}
+
+.block {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--block-width);
+    height: var(--block-width);
+    border-radius: 2px;
+    border-width: 6px;
+    border-style: outset;
+    transform-origin: 50% 50%;
+
+    &.i {
+        background-color: $color-i;
+        border-color: $color-i;
+    }
+
+    &.j {
+        background-color: $color-j;
+        border-color: $color-j;
+    }
+
+    &.l {
+        background-color: $color-l;
+        border-color: $color-l;
+    }
+
+    &.o {
+        background-color: $color-o;
+        border-color: $color-o;
+    }
+
+    &.s {
+        background-color: $color-s;
+        border-color: $color-s;
+    }
+
+    &.t {
+        background-color: $color-t;
+        border-color: rgba($color-t, 0.5);
+    }
+
+    &.z {
+        background-color: $color-z;
+        border-color: $color-z;
+    }
+
+    &.explode {
+        animation: 0.5s ease-out explode forwards;
+    }
+}
