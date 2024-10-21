@@ -1,5 +1,316 @@
-const tetris={elem:null,debugMode:!0,cols:10,rows:22,emptyCell:0,grid:[],blockNbTypes:7,blockStartPos:[5,1],soundFX:{},end:!1,delay:1e3,delayUpdate:50,linesNextLvl:5,lines:0,init:function(t){this.elem=t,this.soundFX=this.setSoundFX(),this.grid=this.initGrid(this.rows,this.cols,this.emptyCell)},Block:class{constructor(t,s){this.type=t,this.pos=s,this.name=tetris.getShapes(this.type,this.pos).name,this.shapeVariants=tetris.getShapes(this.type,this.pos).variants,this.nbVariants=this.shapeVariants.length,this.variant=0,this.shape=this.shapeVariants[this.variant],this.shapeWidth=tetris.getCellsWidth(this.shape),this.isFalling=!0}fall(){this.move([this.pos[0],this.pos[1]+1])}rotates(){let t=this.variant===this.nbVariants-1?0:this.variant+1,s=tetris.getShapes(this.type,this.pos).variants[t],i=tetris.getCellsWidth(s),e=0;"i"===this.name&&this.pos[0]<2?e=0===this.pos[0]?2:1:i>this.shapeWidth&&0===this.pos[0]?e=1:i>this.shapeWidth&&this.pos[0]===tetris.cols-1&&(e=-1),this.canRotate(s,e)&&(this.variant=t,this.shapeWidth=i,this.move([this.pos[0]+e,this.pos[1]]))}move(t){this.pos=t,this.setShape(),this.draw({val:1,shape:this.name})}register(){this.isFalling=!1,this.draw({val:2,shape:this.name})}draw(t){for(let s=0;s<this.shape.length;s++)tetris.updateCell(this.shape[s],t);tetris.displayGrid()}setShape(){this.clear(),this.shape=tetris.getShapes(this.type,this.pos).variants[this.variant]}clear(){for(let t of this.shape)tetris.updateCell(t,{val:tetris.emptyCell,shape:null})}canRotate(t,s){let i=!0;for(let e=0;e<t.length&&i;e++)tetris.isEmptyCell(t[e][0]+s,t[e][1])||(i=!1);return i}isNextPosValid(t){let s=0,i=0,e=!0;switch(t){case"left":s=-1;break;case"right":s=1;break;default:i=1}this.isFalling||(e=!1);for(let h=0;h<this.shape.length&&e;h++)tetris.isEmptyCell(this.shape[h][0]+s,this.shape[h][1]+i)||(e=!1);return e}},getShapes:function(t,s){let i=s[0],e=s[1];return[{name:"i",variants:[[[i,e],[i+1,e],[i-1,e],[i-2,e]],[[i,e],[i,e-1],[i,e+1],[i,e+2]]]},{name:"j",variants:[[[i,e],[i-1,e],[i+1,e],[i+1,e+1]],[[i,e],[i,e-1],[i,e+1],[i+1,e-1]],[[i,e],[i-1,e],[i-1,e-1],[i+1,e]],[[i,e],[i,e-1],[i,e+1],[i-1,e+1]]]},{name:"l",variants:[[[i,e],[i+1,e],[i-1,e],[i-1,e+1]],[[i,e],[i,e-1],[i,e+1],[i+1,e+1]],[[i,e],[i-1,e],[i+1,e],[i+1,e-1]],[[i,e],[i-1,e-1],[i,e-1],[i,e+1]]]},{name:"o",variants:[[[i,e],[i-1,e],[i,e+1],[i-1,e+1]]]},{name:"s",variants:[[[i,e],[i+1,e],[i-1,e+1],[i,e+1]],[[i,e],[i,e-1],[i+1,e],[i+1,e+1]]]},{name:"t",variants:[[[i,e],[i-1,e],[i+1,e],[i,e+1]],[[i,e],[i+1,e],[i,e-1],[i,e+1]],[[i,e],[i-1,e],[i+1,e],[i,e-1]],[[i,e],[i-1,e],[i,e-1],[i,e+1]]]},{name:"z",variants:[[[i,e],[i-1,e],[i,e+1],[i+1,e+1]],[[i,e],[i+1,e-1],[i+1,e],[i,e+1]]]}][t]},checkLines:function(){let t=[];for(let s=0;s<this.grid.length;s++){let i=!0;for(let e=0;e<this.grid[s].length&&i;e++)2!==this.grid[s][e].val&&(i=!1);i&&t.push(s)}return t},addRow:function(){let t=[];for(let s=0;s<this.cols;s++)t.push({val:this.emptyCell,shape:null});this.grid.unshift(t)},removeRow:function(t){this.grid.splice(t,1)},checkEnd:function(){for(let t=3;t<7;t++)if(1!==this.grid[2][t].val&&this.grid[2][t].val!==this.emptyCell)return!0;return!1},playSoundFX:function(t){t in this.soundFX&&this.soundFX[t].play()},setSoundFX:function(){let t={};return["move","softdrop","single","double","triple","tetris"].forEach(s=>{t[s]=this.createSoundFX(s)}),t},createSoundFX:function(t){let s=new Audio;return s.src="./sounds/"+t+".mp3",s.volume=.5,s},getCellsWidth:function(t){let s=[];return t.forEach(t=>{s.includes(t[0])||s.push(t[0])}),s.length},updateCell:function(t,s){return this.grid[t[1]][t[0]]=s},isEmptyCell:function(t,s){return t>=0&&t<this.cols&&s>=0&&s<this.rows&&(1===this.grid[s][t].val||this.grid[s][t].val===this.emptyCell)},displayNextBlock:function(t,s){let i=this.initGrid(4,4,tetris.emptyCell),e=tetris.getShapes(t,[2,1]).variants[0];for(let h of e)i[h[1]][h[0]].val=1;let l="<table>";for(let a=0;a<i.length;a++){l+="<tr>";for(let r=0;r<i[0].length;r++)l+=1===i[a][r].val?`<td>
+const tetris = {
+	elem : null,
+	debugMode : true,
+    cols : 10,
+    rows : 22,
+    emptyCell : 0,
+    grid : [],
+	blockNbTypes : 7,
+	blockStartPos : [5, 1],
+	soundFX : {},
+	end : false,
+    delay : 1000,
+	delayUpdate : 50,
+	linesNextLvl : 5,
+	lines : 0,
+	init : function (elem) {
+		this.elem = elem
+		this.soundFX = this.setSoundFX()
+        this.grid = this.initGrid(this.rows, this.cols, this.emptyCell)
+    },
+	Block : class {
+		constructor (type, pos) {
+			this.type = type
+			this.pos = pos
+			this.name = tetris.getShapes(this.type, this.pos).name
+			this.shapeVariants = tetris.getShapes(this.type, this.pos).variants
+			this.nbVariants = this.shapeVariants.length
+			this.variant = 0
+			this.shape = this.shapeVariants[this.variant]
+			this.shapeWidth = tetris.getCellsWidth(this.shape)
+			this.isFalling = true
+		}
+		fall () {
+			this.move([this.pos[0], this.pos[1] + 1])
+		}
+		rotates () {
+			const nextVariant = (this.variant === this.nbVariants-1) ? 0 : this.variant+1
+			const nextShape = tetris.getShapes(this.type, this.pos).variants[nextVariant]
+			const nextShapeWidth = tetris.getCellsWidth(nextShape)
+			let gap = 0
+			if (this.name === "i" && this.pos[0] < 2) {
+				gap = (this.pos[0] === 0) ? 2 : 1
+			} else if (nextShapeWidth > this.shapeWidth && this.pos[0] === 0) {
+				gap = 1
+			} else if (nextShapeWidth > this.shapeWidth && this.pos[0] === tetris.cols-1) {
+				gap = -1
+			}
+			if (this.canRotate(nextShape, gap)) {
+				this.variant = nextVariant
+				this.shapeWidth = nextShapeWidth
+				this.move([this.pos[0] + gap, this.pos[1]])
+			}
+		}
+		move (newPos) {
+			this.pos = newPos
+			this.setShape()
+			this.draw({
+				val : 1,
+				shape : this.name
+			})
+		}
+		register () {
+			this.isFalling = false
+			this.draw({
+				val : 2,
+				shape : this.name
+			})
+		}
+		draw (v) {
+			for (let i = 0; i < this.shape.length; i++) {
+				tetris.updateCell(this.shape[i], v)
+			}
+			tetris.displayGrid()
+		}
+		setShape () {
+			this.clear()
+			this.shape = tetris.getShapes(this.type, this.pos).variants[this.variant]
+		}
+		clear () {
+			for (let cell of this.shape) {
+				tetris.updateCell(cell, {
+					val : tetris.emptyCell,
+					shape : null
+				})
+			}
+		}
+		canRotate (nextShape, gap) {
+			let isValid = true
+			for (let i = 0; i < nextShape.length && isValid; i++) {
+				if (!tetris.isEmptyCell(nextShape[i][0] + gap, nextShape[i][1])) {
+					isValid = false
+				}
+			}
+			return isValid
+		}
+		isNextPosValid (side) {
+			let nbX = 0
+			let nbY = 0
+			let isValid = true
+			switch (side) {
+				case "left" : nbX = -1
+					break
+				case "right" : nbX = 1
+					break
+				default : nbY = 1
+					break
+			}
+			if (!this.isFalling) isValid = false
+			for (let i = 0; i < this.shape.length && isValid; i++) {
+				if (!tetris.isEmptyCell(this.shape[i][0] + nbX, this.shape[i][1] + nbY)) {
+					isValid = false
+				}
+			}
+			return isValid
+		}
+	},
+	getShapes : function (type, pos) {
+		const x = pos[0]
+		const y = pos[1]
+		const shapes = [
+			{
+				name : "i",
+				variants : [
+					[[x, y], [x+1, y], [x-1, y], [x-2, y]],
+					[[x, y], [x, y-1], [x, y+1], [x, y+2]]
+				]
+			},
+			{
+				name : "j",
+				variants : [
+					[[x, y], [x-1, y], [x+1, y], [x+1, y+1]],
+					[[x, y], [x, y-1], [x, y+1], [x+1, y-1]],
+					[[x, y], [x-1, y], [x-1, y-1], [x+1, y]],
+					[[x, y], [x, y-1], [x, y+1], [x-1, y+1]]
+				]
+			},
+			{
+				name : "l",
+				variants : [
+					[[x, y], [x+1, y], [x-1, y], [x-1, y+1]],
+					[[x, y], [x, y-1], [x, y+1], [x+1, y+1]],
+					[[x, y], [x-1, y], [x+1, y], [x+1, y-1]],
+					[[x, y], [x-1, y-1], [x, y-1], [x, y+1]]
+				]
+			},
+			{
+				name : "o",
+				variants : [
+					[[x, y], [x-1, y], [x, y+1], [x-1, y+1]]
+				]
+			},
+			{
+				name : "s",
+				variants : [
+					[[x, y], [x+1, y], [x-1, y+1], [x, y+1]],
+					[[x, y], [x, y-1], [x+1, y], [x+1, y+1]]
+				]
+			},
+			{
+				name : "t",
+				variants : [
+					[[x, y], [x-1, y], [x+1, y], [x, y+1]],
+					[[x, y], [x+1, y], [x, y-1], [x, y+1]],
+					[[x, y], [x-1, y], [x+1, y], [x, y-1]],
+					[[x, y], [x-1, y], [x, y-1], [x, y+1]]
+				]
+			},
+			{
+				name : "z",
+				variants : [
+					[[x, y], [x-1, y], [x, y+1], [x+1, y+1]],
+					[[x, y], [x+1, y-1], [x+1, y], [x, y+1]]
+				]
+			}
+		]
+		return shapes[type]
+	},
+	checkLines : function () {
+		const completeLines = []
+		for (let i = 0; i < this.grid.length; i++) {
+			let isComplete = true
+			for (let j = 0; j < this.grid[i].length && isComplete; j++) {
+				if (this.grid[i][j].val !== 2) {
+					isComplete = false
+				}
+			}
+			if (isComplete) completeLines.push(i)
+		}
+		return completeLines
+	},
+	addRow : function () {
+		let newRow = []
+		for (let i = 0; i < this.cols; i++) {
+			newRow.push({
+				val : this.emptyCell,
+				shape : null
+			})
+		}
+		this.grid.unshift(newRow)
+	},
+	removeRow : function (line) {
+		this.grid.splice(line, 1)
+	},
+	checkEnd : function () {
+		for (let i = 3; i < 7; i++) {
+			if (this.grid[2][i].val !== 1 && this.grid[2][i].val !== this.emptyCell) {
+				return true
+			}
+		}
+		return false
+	},
+	playSoundFX : function (sound) {
+		if (sound in this.soundFX) {
+			this.soundFX[sound].play()
+		}
+	},
+	setSoundFX : function () {
+		const soundFX = {}
+		const sounds = ['move', 'softdrop', 'single', 'double', 'triple', 'tetris']
+		sounds.forEach((fx) => {
+			soundFX[fx] = this.createSoundFX(fx)
+		})
+		return soundFX
+	},
+	createSoundFX : function (sound) {
+		const audio = new Audio ()
+		audio.src = "./sounds/" + sound + ".mp3"
+		audio.volume = 0.5
+		return audio
+	},
+	getCellsWidth : function (shape) {
+		let unique = []
+		shape.forEach(element => {
+			if (!unique.includes(element[0])) {
+				unique.push(element[0])
+			}
+		})
+		return unique.length
+	},
+	updateCell : function (pos, val) {
+		return this.grid[pos[1]][pos[0]] = val
+	},
+	isEmptyCell : function (x, y) {
+		if ((x >= 0 && x < this.cols) && (y >= 0 && y < this.rows)) {
+			return (this.grid[y][x].val === 1) || (this.grid[y][x].val === this.emptyCell)
+		} else {
+			return false
+		}
+    },
+	displayNextBlock : function (type, container) {
+		const nextBlockGrid = this.initGrid(4, 4, tetris.emptyCell)
+		const nextBlockShape = tetris.getShapes(type, [2, 1]).variants[0]
+		for (let cell of nextBlockShape) {
+			nextBlockGrid[cell[1]][cell[0]].val = 1
+		}
+        let html = `<table>`
+        for (let i = 0; i < nextBlockGrid.length; i++) {
+            html += `<tr>`
+            for (let j = 0; j < nextBlockGrid[0].length; j++) {
+				html += (nextBlockGrid[i][j].val === 1) ? `<td>
 					<div class="block"></div>
-					</td>`:"<td></td>";l+="</tr>"}l+="</table>",s.innerHTML=l},displayGrid:function(){let t="<table>";for(let s=0;s<this.rows;s++){t+="<tr>";for(let i=0;i<this.cols;i++)t+=0!==this.grid[s][i].val?`<td>
-					<div class="block ${this.grid[s][i].shape}"></div>
-					</td>`:"<td></td>";t+="</tr>"}t+="</table>",this.elem.innerHTML=t,this.logGrid()},initGrid:function(t,s,i=""){let e=[];for(let h=0;h<t;h++){e.push([]);for(let l=0;l<s;l++)e[h].push({val:i,shape:null})}return e},logGrid:function(){let t="";for(let s=0;s<this.grid.length;s++){t+="|";for(let i=0;i<this.grid[s].length;i++)0===this.grid[s][i].val?t+="_":t+=this.grid[s][i].val,t+="|";t+=s<this.grid.length-1?"\n":""}this.debugMode&&console.log(t)}};
+					</td>` : `<td></td>`
+            }
+            html += `</tr>`
+        }
+        html += `</table>`
+		container.innerHTML = html
+	},
+	displayGrid : function () {
+        let html = `<table>`
+        for (let i = 0; i < this.rows; i++) {
+            html += `<tr>`
+            for (let j = 0; j < this.cols; j++) {
+				html += (this.grid[i][j].val !== 0) ? `<td>
+					<div class="block ${this.grid[i][j].shape}"></div>
+					</td>` : `<td></td>`
+            }
+            html += `</tr>`
+        }
+        html += `</table>`
+        this.elem.innerHTML = html
+
+        this.logGrid()
+    },
+	initGrid : function (nbLines, nbColumns, char="") {
+		let tab = []
+		for (let i = 0; i < nbLines; i++) {
+			tab.push([])
+			for (let j = 0; j < nbColumns; j++) {
+				tab[i].push({
+					val : char,
+					shape : null
+				})
+			}
+		}
+		return tab
+	},
+	logGrid : function () {
+		let txt = ""
+		for (let i = 0; i < this.grid.length; i++) {
+			txt += "|"
+			for (let j = 0; j < this.grid[i].length; j++) {
+				if (this.grid[i][j].val === 0) {
+					txt += "_"
+				} else {
+					txt += this.grid[i][j].val
+				}
+				txt += "|"
+			}
+			txt += (i < this.grid.length-1) ? "\n" : ""
+		}
+		if (this.debugMode) {
+			console.log(txt)
+		}
+	}
+}

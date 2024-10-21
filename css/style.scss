@@ -12,7 +12,8 @@
 }
 
 body {
-    background-color: #1f2020;
+    //background-color: #1f2020;
+    background-color: $color-bg;
     font-family: Arial, Helvetica, sans-serif;
     color: white;
 }
@@ -20,12 +21,22 @@ body {
 #tetris {
     display: flex;
     justify-content: center;
+    max-width: 440px;
+    margin: auto;
+    padding: 20px;
+    background-color: $color-bg;
 }
 
 .grid {
+    flex: 1 0 204px;
+    width: 63.75%;
+    max-width: 304px;
+    border: 2px solid grey;
+
     table {
+        width: 100%;
         margin: auto;
-        border: 2px solid $color-table-border;
+        border: 0 none;
         border-collapse: collapse;
         background-color: $color-dark;
     }
@@ -37,37 +48,57 @@ body {
     }
     td {
         position: relative;
-        width: var(--block-width);
-        height: var(--block-width);
+        //width: var(--block-width);
+        //height: var(--block-width);
+        width: 10%;
+        height: 0;
         border: 1px solid $color-cell-border;
-        padding: 0;
+        //padding: 0;
+        padding-bottom: 9.5%;
         text-align: center;
+
+        &::before {
+            content: "";
+            display: block;
+            padding-bottom: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
     }
 }
 
 .infos {
+    flex: 1 0 76px;
+    width: 23.75%;
+    max-width: 96px;
     text-align: center;
     font-size: 2rem;
 }
 
 .next-block {
+    width: 100%;
     margin-bottom: 1rem;
     padding-left: 1rem;
 
     table {
+        width: 100%;
         margin: auto;
         border-collapse: collapse;
     }
     td {
         position: relative;
-        width: var(--next-block-width);
-        height: var(--next-block-width);
-        padding: 0;
+        //width: var(--next-block-width);
+        width: 25%;
+        //height: var(--next-block-width);
+        height: 0;
+        padding: 0 0 25%;
         text-align: center;
         
         .block {
-            width: var(--next-block-width);
-            height: var(--next-block-width);
+            //width: var(--next-block-width);
+            //height: var(--next-block-width);
             border-width: 3px;
             border-color: $color-grey;
             background-color: $color-grey;
@@ -79,10 +110,12 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    width: var(--block-width);
-    height: var(--block-width);
+    //width: var(--block-width);
+    //height: var(--block-width);
+    width: 100%;
+    height: 100%;
     border-radius: 2px;
-    border-width: 6px;
+    border-width: 5px;
     border-style: outset;
     transform-origin: 50% 50%;
 
@@ -124,4 +157,29 @@ body {
     &.explode {
         animation: 0.5s ease-out explode forwards;
     }
+}
+
+#btn-sound {
+    margin: 20px auto;
+    padding: 0.5em 1em;
+    background-color: grey;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: white;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+@media (min-width: 540px) {
+
+    body {
+        background-color: #000;
+    }
+
+    #tetris {
+        max-width: 480px;
+        padding: 20px 40px;
+    }
+
 }
