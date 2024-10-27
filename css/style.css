@@ -308,6 +308,18 @@ template {
   display: none;
 }
 
+.title {
+  font-family: "Audiowide", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.text, .infos-item p {
+  font-family: "Press Start 2P", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+
 @keyframes explode {
   0% {
     transform: scale(1);
@@ -332,9 +344,15 @@ template {
   box-sizing: border-box;
 }
 
+html {
+  font-size: 62.5%;
+  line-height: 1.4;
+}
+
 body {
   background-color: #1f1f1f;
   font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.6em;
   color: white;
 }
 
@@ -348,7 +366,7 @@ body {
 }
 
 .grid {
-  flex: 1 0 204px;
+  flex: 1 0 184px;
   width: 63.75%;
   max-width: 304px;
   border: 2px solid grey;
@@ -358,7 +376,7 @@ body {
   margin: auto;
   border: 0 none;
   border-collapse: collapse;
-  background-color: #303030;
+  background-color: #333;
 }
 .grid tr:nth-of-type(1), .grid tr:nth-of-type(2) {
   display: none;
@@ -367,8 +385,9 @@ body {
   position: relative;
   width: 10%;
   height: 0;
-  border: 1px solid #111;
-  padding-bottom: 9.5%;
+  border: 1px solid #222;
+  padding: 0;
+  padding-bottom: 9.6%;
   text-align: center;
 }
 .grid td::before {
@@ -382,17 +401,42 @@ body {
 }
 
 .infos {
-  flex: 1 0 76px;
+  flex: 1 0 96px;
   width: 23.75%;
-  max-width: 96px;
+  max-width: 136px;
+  padding-left: 2rem;
   text-align: center;
   font-size: 2rem;
 }
 
+.infos-item {
+  margin-bottom: 2rem;
+  padding: 1rem 0.8rem;
+  border-radius: 3px;
+  background-color: #2b2b2b;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 1.4rem;
+  line-height: 1;
+  text-align: right;
+}
+.infos-item p {
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+  color: #b2b2b2;
+  line-height: 1;
+  text-transform: uppercase;
+  text-align: left;
+}
+.infos-item.next {
+  padding-bottom: 0;
+}
+.infos-item.next p {
+  margin: 0;
+}
+
 .next-block {
   width: 100%;
-  margin-bottom: 1rem;
-  padding-left: 1rem;
+  padding: 0;
 }
 .next-block table {
   width: 100%;
@@ -419,7 +463,7 @@ body {
   width: 100%;
   height: 100%;
   border-radius: 2px;
-  border-width: 5px;
+  border-width: 4px;
   border-style: outset;
   transform-origin: 50% 50%;
 }
@@ -468,11 +512,21 @@ body {
 }
 
 @media (min-width: 540px) {
-  body {
-    background-color: #000;
-  }
   #tetris {
     max-width: 480px;
-    padding: 20px 40px;
+  }
+  .block {
+    border-width: 5px;
+  }
+  .next-block {
+    width: 100%;
+    padding: 0 0.8rem;
+  }
+  .infos-item {
+    padding: 1rem;
+    font-size: 2rem;
+  }
+  .infos-item p {
+    font-size: 1rem;
   }
 }/*# sourceMappingURL=style.css.map */

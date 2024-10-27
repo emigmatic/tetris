@@ -1,21 +1,45 @@
 const game = document.querySelector("#tetris")
 const gridEl = document.createElement("div")
 const infosEl = document.createElement("div")
+const nextBlockWrapperEl = document.createElement("div")
 const nextBlockEl = document.createElement("div")
+const scoreWrapperEl = document.createElement("div")
+const scoreEl = document.createElement("div")
+const levlelWrapperEl = document.createElement("div")
+const levlelEl = document.createElement("div")
+const nbLinesWrapperEl = document.createElement("div")
 const nbLinesEl = document.createElement("div")
 //const soundBtn = document.createElement("button")
 let currentBlock = null
 let nextBlockType = null
 let loopTimeout = null
+let level = 1
+let score = 0
 
 gridEl.className = "grid"
 infosEl.className = "infos"
+nextBlockWrapperEl.className = "infos-item next"
+nextBlockWrapperEl.innerHTML = "<p>Next</p>"
 nextBlockEl.className = "next-block"
+scoreWrapperEl.className = "infos-item score"
+scoreWrapperEl.innerHTML = "<p>Score</p>"
+levlelWrapperEl.className = "infos-item level"
+levlelWrapperEl.innerHTML = "<p>Level</p>"
+nbLinesWrapperEl.className = "infos-item lines"
+nbLinesWrapperEl.innerHTML = "<p>Lines</p>"
 nbLinesEl.id = "lines"
+scoreEl.id = "score"
+levlelEl.id = "level"
 //soundBtn.id = "btn-sound"
 //soundBtn.innerHTML = "Play Sounds"
-infosEl.appendChild(nextBlockEl)
-infosEl.appendChild(nbLinesEl)
+nextBlockWrapperEl.appendChild(nextBlockEl)
+scoreWrapperEl.appendChild(scoreEl)
+levlelWrapperEl.appendChild(levlelEl)
+nbLinesWrapperEl.appendChild(nbLinesEl)
+infosEl.appendChild(nextBlockWrapperEl)
+infosEl.appendChild(scoreWrapperEl)
+infosEl.appendChild(levlelWrapperEl)
+infosEl.appendChild(nbLinesWrapperEl)
 //infosEl.appendChild(soundBtn)
 game.appendChild(gridEl)
 game.appendChild(infosEl)
@@ -26,6 +50,8 @@ currentBlock = new tetris.Block(randomNb(tetris.blockNbTypes), tetris.blockStart
 nextBlockType = randomNb(tetris.blockNbTypes)
 tetris.displayNextBlock(nextBlockType, nextBlockEl)
 nbLinesEl.textContent = tetris.lines
+scoreEl.textContent = score
+levlelEl.textContent = level
 loop()
 
 function loop () {
@@ -48,17 +74,20 @@ function loop () {
                     blocksToRemove.forEach((block) => block.classList.add("explode"))
                 }
                 playLinesSound(lines.length)
+                scoreEl.textContent = updateScore(lines.length)
                 wait(500).then(() => {
                     for (let line of lines) {
                         tetris.removeRow(line)
                         tetris.addRow()
                         tetris.lines += 1
-                        if (tetris.lines % tetris.linesNextLvl === 0) {
-                            tetris.delay -= tetris.delayUpdate
+                        if (level < 20 && tetris.lines % tetris.linesNextLvl === 0) {
+                            tetris.delay -= tetris.delay * tetris.delayUpdate
+                            level++
                         }
                     }
-                    tetris.displayGrid()
                     nbLinesEl.textContent = tetris.lines
+                    levlelEl.textContent = level
+                    tetris.displayGrid()
                     loopTimeout = setTimeout(loop, tetris.delay)
                 })
             } else {
@@ -73,6 +102,12 @@ document.addEventListener("keydown", function (event) {
 	const key = event.code
 	const newPos = Array.from(currentBlock.pos)
 	switch (key) {
+        case "ArrowUp" :
+            while (currentBlock.isFalling) {
+                clearTimeout(loopTimeout)
+                loop()
+			}
+			break
 		case "ArrowLeft" :
 			if (currentBlock.isNextPosValid("left")) {
 				newPos[0] -= 1
@@ -94,7 +129,7 @@ document.addEventListener("keydown", function (event) {
             }
             debug("Down")
 			break
-		case "ArrowUp" :
+		//case "ArrowUp" :
         case "Space" :
 			if (currentBlock.isFalling) {
 				currentBlock.rotates()
@@ -109,6 +144,12 @@ document.addEventListener("keydown", function (event) {
 
 function randomNb (max) {
     return Math.floor(Math.random() * max)
+}
+
+function updateScore (nbLines) {
+    const points = [0, 40, 100, 500, 1200]
+    score += (points[nbLines] * level)
+    return score
 }
 
 function playLinesSound (nbLines) {

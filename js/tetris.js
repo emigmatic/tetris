@@ -1,6 +1,6 @@
 const tetris = {
 	elem : null,
-	debugMode : true,
+	debugMode : false,
     cols : 10,
     rows : 22,
     emptyCell : 0,
@@ -10,8 +10,9 @@ const tetris = {
 	soundFX : {},
 	end : false,
     delay : 1000,
-	delayUpdate : 50,
-	linesNextLvl : 5,
+	delayUpdate : 0.14,
+	maxNbLvl: 20,
+	linesNextLvl : 10,
 	lines : 0,
 	init : function (elem) {
 		this.elem = elem
