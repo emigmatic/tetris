@@ -27,15 +27,14 @@ body {
 #tetris {
     display: flex;
     justify-content: center;
-    max-width: 440px;
+    max-width: 480px;
     margin: auto;
     padding: 20px;
     background-color: $color-bg;
 }
 
 .grid {
-    flex: 1 0 184px;
-    width: 63.75%;
+    flex: 1 0 65.71%;
     max-width: 304px;
     border: 2px solid grey;
 
@@ -74,8 +73,7 @@ body {
 }
 
 .infos {
-    flex: 1 0 96px;
-    width: 23.75%;
+    flex: 1 0 34.29%;
     max-width: 136px;
     padding-left: 2rem;
     text-align: center;
@@ -113,6 +111,8 @@ body {
 
 .next-block {
     width: 100%;
+    max-width: 60px;
+    margin: 0 auto;
     padding: 0;
 
     table {
@@ -199,18 +199,9 @@ body {
 }
 
 @media (min-width: 540px) {
-
-    #tetris {
-        max-width: 480px;
-    }
     
     .block {
         border-width: 5px;
-    }
-    
-    .next-block {
-        width: 100%;
-        padding: 0 0.8rem;
     }
 
     .infos-item {
@@ -218,6 +209,10 @@ body {
         font-size: 2rem;
 
         p { font-size: 1rem; }
+    }
+    
+    .next-block {
+        max-width: 80px;
     }
 
 }
