@@ -1,4 +1,5 @@
 const controls = document.createElement("div")
+const buttons = document.createElement("div")
 
 const dropBtn = createBtn("drop-btn", "↡");
 const leftBtn = createBtn("left-btn", "←");
@@ -6,42 +7,93 @@ const rightBtn = createBtn("right-btn", "→");
 const downBtn = createBtn("down-btn", "↓");
 const rotateBtn = createBtn("rotate-btn", "⟳");
 
-controls.id = "controls"
-controls.append(dropBtn, leftBtn, rightBtn, downBtn, rotateBtn) 
+controls.className = "controls"
+buttons.className = "buttons"
+buttons.append(dropBtn, leftBtn, rightBtn, downBtn, rotateBtn)
+controls.append(buttons)
 game.appendChild(controls)
 
 let holdInterval;
 
+// Démarre l'action et le maintien au `touchstart`
 leftBtn.addEventListener("touchstart", () => {
+    // Exécuter une fois l'action pour l'appui simple
+    if (currentBlock.isNextPosValid("left")) {
+        currentBlock.move([currentBlock.pos[0] - 1, currentBlock.pos[1]]);
+    }
+
+    // Définir l'intervalle pour la répétition en cas de maintien
     holdInterval = setInterval(() => {
         if (currentBlock.isNextPosValid("left")) {
             currentBlock.move([currentBlock.pos[0] - 1, currentBlock.pos[1]]);
         }
-    }, 75); // ajuster pour la vitesse souhaitée
+    }, 100);
 }, { passive: true });
 
-leftBtn.addEventListener("touchend", () => clearInterval(holdInterval));
+// Arrêter l'intervalle au `touchend` pour empêcher la répétition
+leftBtn.addEventListener("touchend", () => {
+    clearInterval(holdInterval);
+}, { passive: true });
 
+// Optionnel : gérer le cas où le toucher est annulé
+leftBtn.addEventListener("touchcancel", () => {
+    clearInterval(holdInterval);
+}, { passive: true });
+
+
+// Démarre l'action et le maintien au `touchstart`
 rightBtn.addEventListener("touchstart", () => {
+    // Exécuter une fois l'action pour l'appui simple
+    if (currentBlock.isNextPosValid("right")) {
+        currentBlock.move([currentBlock.pos[0] + 1, currentBlock.pos[1]]);
+    }
+
+    // Définir l'intervalle pour la répétition en cas de maintien
     holdInterval = setInterval(() => {
         if (currentBlock.isNextPosValid("right")) {
             currentBlock.move([currentBlock.pos[0] + 1, currentBlock.pos[1]]);
         }
-    }, 75);
+    }, 100);
 }, { passive: true });
 
-rightBtn.addEventListener("touchend", () => clearInterval(holdInterval));
+// Arrêter l'intervalle au `touchend` pour empêcher la répétition
+rightBtn.addEventListener("touchend", () => {
+    clearInterval(holdInterval);
+}, { passive: true });
 
+// Optionnel : gérer le cas où le toucher est annulé
+rightBtn.addEventListener("touchcancel", () => {
+    clearInterval(holdInterval);
+}, { passive: true });
+
+
+// Démarre l'action et le maintien au `touchstart`
 downBtn.addEventListener("touchstart", () => {
+    // Exécuter une fois l'action pour l'appui simple
+    if (currentBlock.isFalling) {
+        clearTimeout(loopTimeout);
+        loop();
+    }
+
+    // Définir l'intervalle pour la répétition en cas de maintien
     holdInterval = setInterval(() => {
         if (currentBlock.isFalling) {
             clearTimeout(loopTimeout);
             loop();
         }
-    }, 75);
+    }, 100);
 }, { passive: true });
 
-downBtn.addEventListener("touchend", () => clearInterval(holdInterval));
+// Arrêter l'intervalle au `touchend` pour empêcher la répétition
+downBtn.addEventListener("touchend", () => {
+    clearInterval(holdInterval);
+}, { passive: true });
+
+// Optionnel : gérer le cas où le toucher est annulé
+downBtn.addEventListener("touchcancel", () => {
+    clearInterval(holdInterval);
+}, { passive: true });
+
 
 rotateBtn.addEventListener("touchstart", () => {
     if (currentBlock.isFalling) {
@@ -49,6 +101,7 @@ rotateBtn.addEventListener("touchstart", () => {
         tetris.playSoundFX("move");
     }
 }, { passive: true });
+
 
 dropBtn.addEventListener("touchstart", () => {
     while (currentBlock.isFalling) {

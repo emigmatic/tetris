@@ -1,4 +1,5 @@
 const game = document.querySelector("#tetris")
+const view = document.createElement("div")
 const gridEl = document.createElement("div")
 const infosEl = document.createElement("div")
 const nextBlockWrapperEl = document.createElement("div")
@@ -16,6 +17,7 @@ let loopTimeout = null
 let level = formatTwoDigits(1)
 let score = 0
 
+view.className= "view"
 gridEl.className = "grid"
 infosEl.className = "infos"
 nextBlockWrapperEl.className = "infos-item next"
@@ -32,6 +34,7 @@ scoreEl.id = "score"
 levlelEl.id = "level"
 //soundBtn.id = "btn-sound"
 //soundBtn.innerHTML = "Play Sounds"
+view.append(gridEl, infosEl)
 nextBlockWrapperEl.appendChild(nextBlockEl)
 scoreWrapperEl.appendChild(scoreEl)
 levlelWrapperEl.appendChild(levlelEl)
@@ -41,8 +44,7 @@ infosEl.appendChild(scoreWrapperEl)
 infosEl.appendChild(levlelWrapperEl)
 infosEl.appendChild(nbLinesWrapperEl)
 //infosEl.appendChild(soundBtn)
-game.appendChild(gridEl)
-game.appendChild(infosEl)
+game.appendChild(view)
 
 tetris.init(gridEl)
 

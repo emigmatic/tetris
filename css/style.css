@@ -358,11 +358,21 @@ body {
 
 #tetris {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   max-width: 480px;
+  width: 100%;
+  height: 100vh;
   margin: auto;
   padding: 20px;
   background-color: #1f1f1f;
+}
+
+.view {
+  flex: 0 1 auto;
+  display: flex;
+  width: 100%;
 }
 
 .grid {
@@ -416,6 +426,11 @@ body {
   font-size: 1.4rem;
   line-height: 1;
   text-align: right;
+}
+.infos-item * {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
 }
 .infos-item p {
   margin: 0 0 1rem;
@@ -511,16 +526,24 @@ body {
   text-transform: uppercase;
 }
 
-#controls {
-  position: fixed;
-  bottom: 2rem;
+.controls {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.buttons {
   width: auto;
+  max-width: 29rem;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(2, 1fr);
   gap: 1rem;
 }
-#controls button {
+.buttons button {
   font-size: 2.4rem;
   width: 50px;
   height: 50px;
@@ -557,6 +580,16 @@ body {
   grid-area: 2/4/2/4;
 }
 
+@media (min-width: 380px) {
+  .buttons {
+    max-width: 34rem;
+  }
+  .buttons button {
+    font-size: 2.8rem;
+    width: 60px;
+    height: 60px;
+  }
+}
 @media (min-width: 540px) {
   .block {
     border-width: 5px;

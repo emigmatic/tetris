@@ -26,11 +26,21 @@ body {
 
 #tetris {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
     max-width: 480px;
+    width: 100%;
+    height: 100vh;
     margin: auto;
     padding: 20px;
     background-color: $color-bg;
+}
+
+.view {
+    flex: 0 1 auto;
+    display: flex;
+    width: 100%;
 }
 
 .grid {
@@ -89,6 +99,10 @@ body {
     font-size: 1.4rem;
     line-height: 1;
     text-align: right;
+
+    * {
+        user-select: none
+    }
 
     p {
         @extend .text;
@@ -198,10 +212,18 @@ body {
     text-transform: uppercase;
 }
 
-#controls {
-    position: fixed;
-    bottom: 2rem;
+.controls {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.buttons {
     width: auto;
+    max-width: 29rem;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(2, 1fr);
@@ -239,6 +261,20 @@ body {
 
 #down-btn {
     grid-area: 2 / 4 / 2 / 4;
+}
+
+@media (min-width: 380px) {
+
+    .buttons {
+        max-width: 34rem;
+
+        button {
+            font-size: 2.8rem;
+            width: 60px;
+            height: 60px;
+        }
+    }
+
 }
 
 @media (min-width: 540px) {
