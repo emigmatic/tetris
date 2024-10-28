@@ -4,9 +4,9 @@ let touchEndX = 0;
 let touchEndY = 0;
 
 // Ajouter des écouteurs d'événements pour le toucher
-game.addEventListener('touchstart', handleTouchStart, false);
-game.addEventListener('touchmove', handleTouchMove, false);
-game.addEventListener('touchend', handleTouchEnd, false);
+gridEl.addEventListener('touchstart', handleTouchStart, { passive: true });
+gridEl.addEventListener('touchmove', handleTouchMove, { passive: false });
+gridEl.addEventListener('touchend', handleTouchEnd, { passive: true });
 
 // Fonction appelée quand un doigt touche l'écran
 function handleTouchStart(event) {

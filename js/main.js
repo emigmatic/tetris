@@ -13,7 +13,7 @@ const nbLinesEl = document.createElement("div")
 let currentBlock = null
 let nextBlockType = null
 let loopTimeout = null
-let level = 1
+let level = formatTwoDigits(1)
 let score = 0
 
 gridEl.className = "grid"
@@ -51,7 +51,7 @@ nextBlockType = randomNb(tetris.blockNbTypes)
 tetris.displayNextBlock(nextBlockType, nextBlockEl)
 nbLinesEl.textContent = tetris.lines
 scoreEl.textContent = score
-levlelEl.textContent = level
+levlelEl.textContent = level + "/20"
 loop()
 
 function loop () {
@@ -86,7 +86,7 @@ function loop () {
                         }
                     }
                     nbLinesEl.textContent = tetris.lines
-                    levlelEl.textContent = level
+                    levlelEl.textContent = formatTwoDigits(level) + "/20"
                     tetris.displayGrid()
                     loopTimeout = setTimeout(loop, tetris.delay)
                 })
@@ -97,50 +97,6 @@ function loop () {
         }
     }
 }
-
-document.addEventListener("keydown", function (event) {
-	const key = event.code
-	const newPos = Array.from(currentBlock.pos)
-	switch (key) {
-        case "ArrowUp" :
-            while (currentBlock.isFalling) {
-                clearTimeout(loopTimeout)
-                loop()
-			}
-			break
-		case "ArrowLeft" :
-			if (currentBlock.isNextPosValid("left")) {
-				newPos[0] -= 1
-				currentBlock.move(newPos)
-			}
-            debug("Left")
-			break
-		case "ArrowRight" :
-			if (currentBlock.isNextPosValid("right")) {
-				newPos[0] += 1
-				currentBlock.move(newPos)
-			}
-            debug("Right")
-			break
-		case "ArrowDown" :
-            if (currentBlock.isFalling) {
-                clearTimeout(loopTimeout)
-                loop()
-            }
-            debug("Down")
-			break
-		//case "ArrowUp" :
-        case "Space" :
-			if (currentBlock.isFalling) {
-				currentBlock.rotates()
-				tetris.playSoundFX("move")
-			}
-            debug("Rotate")
-			break
-		default :
-			return
-	}
-})
 
 function randomNb (max) {
     return Math.floor(Math.random() * max)
@@ -175,6 +131,10 @@ function wait (duration) {
     return new Promise((resolve, reject) => {
         setTimeout(() => resolve(duration), duration)
     })
+}
+
+function formatTwoDigits (number) {
+    return number.toLocaleString('fr-FR', { minimumIntegerDigits: 2 });
 }
 
 function debug (e) {
