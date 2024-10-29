@@ -523,7 +523,7 @@ body {
   border: 0 none;
   border-radius: 50px;
   background-color: transparent;
-  background-image: url("/images/sound-off.png");
+  background-image: url("../images/sound-off.png");
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -534,10 +534,10 @@ body {
   filter: brightness(0) saturate(100%) invert(97%) sepia(0%) saturate(90%) hue-rotate(184deg) brightness(79%) contrast(75%);
 }
 #btn-sound.on {
-  background-image: url("/images/sound-on.png");
+  background-image: url("../images/sound-on.png");
 }
 #btn-sound.off {
-  background-image: url("/images/sound-off.png");
+  background-image: url("../images/sound-off.png");
 }
 
 .controls {
