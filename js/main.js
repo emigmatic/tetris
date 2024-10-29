@@ -1,49 +1,28 @@
 const game = document.querySelector("#tetris")
-const view = document.createElement("div")
-const gridEl = document.createElement("div")
-const infosEl = document.createElement("div")
-const nextBlockWrapperEl = document.createElement("div")
-const nextBlockEl = document.createElement("div")
-const scoreWrapperEl = document.createElement("div")
-const scoreEl = document.createElement("div")
-const levlelWrapperEl = document.createElement("div")
-const levlelEl = document.createElement("div")
-const nbLinesWrapperEl = document.createElement("div")
-const nbLinesEl = document.createElement("div")
-//const soundBtn = document.createElement("button")
+const view = createDOM("div", {class: "view"})
+const gridEl = createDOM("div", {class: "grid"})
+const infosEl = createDOM("div", {class: "infos"})
+const nextBlockWrapperEl = createDOM("div", {class: "infos-item next"}, "<p>Next</p>")
+const nextBlockEl = createDOM("div", {class: "next-block"})
+const scoreWrapperEl = createDOM("div", {class: "infos-item score"}, "<p>Score</p>")
+const scoreEl = createDOM("div", {id: "score"})
+const levlelWrapperEl = createDOM("div", {class: "infos-item level"}, "<p>Level</p>")
+const levlelEl = createDOM("div", {id: "level"})
+const nbLinesWrapperEl = createDOM("div", {class: "infos-item lines"}, "<p>Lines</p>")
+const nbLinesEl = createDOM("div", {id: "lines"})
+
 let currentBlock = null
 let nextBlockType = null
 let loopTimeout = null
 let level = formatTwoDigits(1)
 let score = 0
 
-view.className= "view"
-gridEl.className = "grid"
-infosEl.className = "infos"
-nextBlockWrapperEl.className = "infos-item next"
-nextBlockWrapperEl.innerHTML = "<p>Next</p>"
-nextBlockEl.className = "next-block"
-scoreWrapperEl.className = "infos-item score"
-scoreWrapperEl.innerHTML = "<p>Score</p>"
-levlelWrapperEl.className = "infos-item level"
-levlelWrapperEl.innerHTML = "<p>Level</p>"
-nbLinesWrapperEl.className = "infos-item lines"
-nbLinesWrapperEl.innerHTML = "<p>Lines</p>"
-nbLinesEl.id = "lines"
-scoreEl.id = "score"
-levlelEl.id = "level"
-//soundBtn.id = "btn-sound"
-//soundBtn.innerHTML = "Play Sounds"
 view.append(gridEl, infosEl)
 nextBlockWrapperEl.appendChild(nextBlockEl)
 scoreWrapperEl.appendChild(scoreEl)
 levlelWrapperEl.appendChild(levlelEl)
 nbLinesWrapperEl.appendChild(nbLinesEl)
-infosEl.appendChild(nextBlockWrapperEl)
-infosEl.appendChild(scoreWrapperEl)
-infosEl.appendChild(levlelWrapperEl)
-infosEl.appendChild(nbLinesWrapperEl)
-//infosEl.appendChild(soundBtn)
+infosEl.append(nextBlockWrapperEl, scoreWrapperEl, levlelWrapperEl, nbLinesWrapperEl)
 game.appendChild(view)
 
 tetris.init(gridEl)
@@ -97,6 +76,8 @@ function loop () {
                 loopTimeout = setTimeout(loop, tetris.delay)
             }
         }
+    } else {
+        game.classList.add("is-ended")
     }
 }
 
@@ -137,6 +118,17 @@ function wait (duration) {
 
 function formatTwoDigits (number) {
     return number.toLocaleString('fr-FR', { minimumIntegerDigits: 2 });
+}
+
+function createDOM (tag, attrs = {}, childNode = "") {
+    const element = document.createElement(tag)
+    for (const [attr, value] of Object.entries(attrs)) {
+        if (value !== null) {
+            element.setAttribute(attr, value)
+        }
+    }
+    element.innerHTML = childNode
+    return element
 }
 
 function debug (e) {

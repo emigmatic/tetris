@@ -378,14 +378,14 @@ body {
 .grid {
   flex: 1 0 65.71%;
   max-width: 304px;
-  border: 2px solid grey;
+  border: 2px solid #2b2b2b;
 }
 .grid table {
   width: 100%;
   margin: auto;
   border: 0 none;
   border-collapse: collapse;
-  background-color: #333;
+  background-color: #3d3d3d;
 }
 .grid tr:nth-of-type(1), .grid tr:nth-of-type(2) {
   display: none;
@@ -514,6 +514,12 @@ body {
   animation: 0.5s ease-out explode forwards;
 }
 
+#tetris.is-ended .block {
+  background-color: #7f7f7f;
+  border-color: #7f7f7f;
+  transition: all 0.5s ease-out;
+}
+
 #btn-sound {
   margin: 20px auto;
   padding: 0.5em 1em;
@@ -553,7 +559,7 @@ body {
   height: 50px;
   padding: 0;
   border-radius: 10px;
-  background: #777;
+  background-color: #111;
   color: white;
   border: 0 none;
   -webkit-appearance: none;
