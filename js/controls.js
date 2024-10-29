@@ -105,7 +105,9 @@ if (isMobileDevice()) {
     rotateBtn.addEventListener("touchstart", () => {
         if (currentBlock.isFalling) {
             currentBlock.rotates();
-            tetris.playSoundFX("move");
+            if (sound) {
+                tetris.playSoundFX("move");
+            }
         }
     }, { passive: true });
     
@@ -162,7 +164,9 @@ document.addEventListener("keydown", function (event) {
         case "Space" :
 			if (currentBlock.isFalling) {
 				currentBlock.rotates()
-				tetris.playSoundFX("move")
+				if (sound) {
+                    tetris.playSoundFX("move")
+                }
 			}
             debug("Rotate")
 			break

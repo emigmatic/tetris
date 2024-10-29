@@ -3,26 +3,28 @@ const view = createDOM("div", {class: "view"})
 const gridEl = createDOM("div", {class: "grid"})
 const infosEl = createDOM("div", {class: "infos"})
 const nextBlockWrapperEl = createDOM("div", {class: "infos-item next"}, "<p>Next</p>")
-const nextBlockEl = createDOM("div", {class: "next-block"})
+const nextBlockEl = createDOM("div", {id: "next-block", class: "info"})
 const scoreWrapperEl = createDOM("div", {class: "infos-item score"}, "<p>Score</p>")
-const scoreEl = createDOM("div", {id: "score"})
+const scoreEl = createDOM("div", {id: "score", class: "info"})
 const levlelWrapperEl = createDOM("div", {class: "infos-item level"}, "<p>Level</p>")
-const levlelEl = createDOM("div", {id: "level"})
+const levlelEl = createDOM("div", {id: "level", class: "info"})
 const nbLinesWrapperEl = createDOM("div", {class: "infos-item lines"}, "<p>Lines</p>")
-const nbLinesEl = createDOM("div", {id: "lines"})
+const nbLinesEl = createDOM("div", {id: "lines", class: "info"})
+const soundBtn = createDOM("button", {id: "btn-sound", class: "off"})
 
 let currentBlock = null
 let nextBlockType = null
 let loopTimeout = null
 let level = formatTwoDigits(1)
 let score = 0
+let sound = false
 
 view.append(gridEl, infosEl)
 nextBlockWrapperEl.appendChild(nextBlockEl)
 scoreWrapperEl.appendChild(scoreEl)
 levlelWrapperEl.appendChild(levlelEl)
 nbLinesWrapperEl.appendChild(nbLinesEl)
-infosEl.append(nextBlockWrapperEl, scoreWrapperEl, levlelWrapperEl, nbLinesWrapperEl)
+infosEl.append(nextBlockWrapperEl, scoreWrapperEl, levlelWrapperEl, nbLinesWrapperEl, soundBtn)
 game.appendChild(view)
 
 tetris.init(gridEl)
@@ -54,7 +56,9 @@ function loop () {
                     const blocksToRemove = gridRow.querySelectorAll(".block")
                     blocksToRemove.forEach((block) => block.classList.add("explode"))
                 }
-                playLinesSound(lines.length)
+                if (sound) {
+                    playLinesSound(lines.length)
+                }
                 scoreEl.textContent = updateScore(lines.length)
                 wait(500).then(() => {
                     for (let line of lines) {
@@ -72,7 +76,9 @@ function loop () {
                     loopTimeout = setTimeout(loop, tetris.delay)
                 })
             } else {
-                tetris.playSoundFX("softdrop")
+                if (sound) {
+                    tetris.playSoundFX("softdrop")
+                }
                 loopTimeout = setTimeout(loop, tetris.delay)
             }
         }
@@ -80,6 +86,16 @@ function loop () {
         game.classList.add("is-ended")
     }
 }
+
+soundBtn.addEventListener("click", () => {
+    sound = !sound
+    if (sound) {
+        soundBtn.className = "on"
+    } else {
+        soundBtn.className = "off"
+    }
+    
+})
 
 function randomNb (max) {
     return Math.floor(Math.random() * max)

@@ -385,7 +385,7 @@ body {
   margin: auto;
   border: 0 none;
   border-collapse: collapse;
-  background-color: #3d3d3d;
+  background-color: #3f3f3f;
 }
 .grid tr:nth-of-type(1), .grid tr:nth-of-type(2) {
   display: none;
@@ -394,7 +394,7 @@ body {
   position: relative;
   width: 10%;
   height: 0;
-  border: 1px solid #222;
+  border: 1px solid #272727;
   padding: 0;
   padding-bottom: 9.6%;
   text-align: center;
@@ -418,14 +418,7 @@ body {
 }
 
 .infos-item {
-  margin-bottom: 2rem;
-  padding: 1rem 0.8rem;
-  border-radius: 3px;
-  background-color: #2b2b2b;
-  font-family: "Courier New", Courier, monospace;
-  font-size: 1.6rem;
-  line-height: 1;
-  text-align: right;
+  margin-bottom: 3rem;
 }
 .infos-item * {
   -webkit-user-select: none;
@@ -436,36 +429,38 @@ body {
   margin: 0 0 1rem;
   font-size: 1rem;
   color: #b2b2b2;
-  line-height: 1;
+  line-height: 1.4;
   text-transform: uppercase;
   text-align: left;
 }
-.infos-item.next {
-  padding-bottom: 0;
-}
-.infos-item.next p {
-  margin: 0;
+
+.info {
+  padding: 0.5rem 1rem;
+  border-radius: 3px;
+  background-color: #2b2b2b;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 1.6rem;
+  line-height: 1;
+  text-align: right;
 }
 
-.next-block {
+#next-block {
+  padding: 0;
+}
+#next-block table {
   width: 100%;
   max-width: 60px;
   margin: 0 auto;
-  padding: 0;
-}
-.next-block table {
-  width: 100%;
-  margin: auto;
   border-collapse: collapse;
 }
-.next-block td {
+#next-block td {
   position: relative;
   width: 25%;
   height: 0;
   padding: 0 0 25%;
   text-align: center;
 }
-.next-block td .block {
+#next-block td .block {
   border-width: 3px;
   border-color: #7f7f7f;
   background-color: #7f7f7f;
@@ -521,15 +516,28 @@ body {
 }
 
 #btn-sound {
+  width: 4rem;
+  height: 4rem;
   margin: 20px auto;
-  padding: 0.5em 1em;
-  background-color: grey;
+  padding: 0;
+  border: 0 none;
   border-radius: 50px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: white;
+  background-color: transparent;
+  background-image: url("/images/sound-off.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
   line-height: 1;
-  text-transform: uppercase;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  filter: brightness(0) saturate(100%) invert(97%) sepia(0%) saturate(90%) hue-rotate(184deg) brightness(79%) contrast(75%);
+}
+#btn-sound.on {
+  background-image: url("/images/sound-on.png");
+}
+#btn-sound.off {
+  background-image: url("/images/sound-off.png");
 }
 
 .controls {
@@ -559,7 +567,7 @@ body {
   height: 50px;
   padding: 0;
   border-radius: 10px;
-  background-color: #111;
+  background-color: #6f6f6f;
   color: white;
   border: 0 none;
   -webkit-appearance: none;
@@ -605,13 +613,12 @@ body {
     border-width: 5px;
   }
   .infos-item {
-    padding: 1rem;
     font-size: 2rem;
   }
   .infos-item p {
     font-size: 1.2rem;
   }
-  .next-block {
+  #next-block table {
     max-width: 80px;
   }
 }/*# sourceMappingURL=style.css.map */

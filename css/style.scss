@@ -91,14 +91,7 @@ body {
 }
 
 .infos-item {
-    margin-bottom: 2rem;
-    padding: 1rem 0.8rem;
-    border-radius: 3px;
-    background-color: #2b2b2b;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 1.6rem;
-    line-height: 1;
-    text-align: right;
+    margin-bottom: 3rem;
 
     * {
         user-select: none
@@ -109,29 +102,29 @@ body {
         margin: 0 0 1rem;
         font-size: 1rem;
         color: #b2b2b2;
-        line-height: 1;
+        line-height: 1.4;
         text-transform: uppercase;
         text-align: left;
     }
-
-    &.next {
-        padding-bottom: 0;
-
-        p {
-            margin: 0;
-        }
-    }
 }
 
-.next-block {
-    width: 100%;
-    max-width: 60px;
-    margin: 0 auto;
+.info {
+    padding: 0.5rem 1rem;
+    border-radius: 3px;
+    background-color: $color-table-border;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.6rem;
+    line-height: 1;
+    text-align: right;
+}
+
+#next-block {
     padding: 0;
 
     table {
         width: 100%;
-        margin: auto;
+        max-width: 60px;
+        margin: 0 auto;
         border-collapse: collapse;
     }
     td {
@@ -201,21 +194,33 @@ body {
 }
 
 #tetris.is-ended .block {
-    background-color: #7f7f7f;
-    border-color: #7f7f7f;
+    background-color: $color-grey;
+    border-color: $color-grey;
     transition: all 0.5s ease-out;
 }
 
 #btn-sound {
+    width: 4rem;
+    height: 4rem;
     margin: 20px auto;
-    padding: 0.5em 1em;
-    background-color: grey;
+    padding: 0;
+    border: 0 none;
     border-radius: 50px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: white;
+    background-color: transparent;
+    background-image: url("/images/sound-off.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
     line-height: 1;
-    text-transform: uppercase;
+    appearance: none;
+    filter: brightness(0) saturate(100%) invert(97%) sepia(0%) saturate(90%) hue-rotate(184deg) brightness(79%) contrast(75%);
+
+    &.on {
+        background-image: url("/images/sound-on.png");
+    }
+    &.off {
+        background-image: url("/images/sound-off.png");
+    }
 }
 
 .controls {
@@ -245,7 +250,7 @@ body {
         height: 50px;
         padding: 0;
         border-radius: 10px;
-        background-color: #111;
+        background-color: $color-btn;
         color: white;
         border: 0 none;
         appearance: none;
@@ -294,13 +299,12 @@ body {
     }
 
     .infos-item {
-        padding: 1rem;
         font-size: 2rem;
 
         p { font-size: 1.2rem; }
     }
     
-    .next-block {
+    #next-block table {
         max-width: 80px;
     }
 
