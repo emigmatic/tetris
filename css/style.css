@@ -372,6 +372,7 @@ body {
 .view {
   flex: 0 1 auto;
   display: flex;
+  align-items: flex-start;
   width: 100%;
 }
 
@@ -385,7 +386,7 @@ body {
   margin: auto;
   border: 0 none;
   border-collapse: collapse;
-  background-color: #3f3f3f;
+  background-color: #454545;
 }
 .grid tr:nth-of-type(1), .grid tr:nth-of-type(2) {
   display: none;
@@ -518,7 +519,7 @@ body {
 #btn-sound {
   width: 4rem;
   height: 4rem;
-  margin: 20px auto;
+  margin: 1rem auto 0;
   padding: 0;
   border: 0 none;
   border-radius: 50px;

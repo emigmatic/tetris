@@ -40,6 +40,7 @@ body {
 .view {
     flex: 0 1 auto;
     display: flex;
+    align-items: flex-start;
     width: 100%;
 }
 
@@ -202,7 +203,7 @@ body {
 #btn-sound {
     width: 4rem;
     height: 4rem;
-    margin: 20px auto;
+    margin: 1rem auto 0;
     padding: 0;
     border: 0 none;
     border-radius: 50px;
